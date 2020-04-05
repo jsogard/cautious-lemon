@@ -1,4 +1,4 @@
-import { isEmailInUse, insertUser } from './scripts/user.js'
+import { isEmailInUse, insertUser, getUsers } from './scripts/user.js'
 
 const validateUser = async (user) => {
 
@@ -43,5 +43,10 @@ export default async (req, res) => {
 			} else {
 				res.status(400).json({ errors: val.messages });
 			}
+			break;
+		case 'GET':
+			console.info(await getUsers(req.query));
+			res.status(200).json(await getUsers(req.query));
+			break;
 	}
 };

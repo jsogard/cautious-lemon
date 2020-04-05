@@ -1,9 +1,9 @@
 const db = require('../../../lib/db');
-const escp = require('sql-template-strings');
+const SQL = require('sql-template-strings');
 const sha256 = require('sha256');
 
 const isEmailInUse = async (email) => {
-	const res = await db.query(escp`
+	const res = await db.query(SQL`
 		SELECT email
 		FROM Users
 		WHERE email = ${email}
@@ -21,10 +21,27 @@ const insertUser = async (user) => {
 	const salt = sha256(user.email);
 	const password = sha256(user.password + salt);
 
-	const res = await db.query(escp`
+	await db.query(SQL`
 		INSERT INTO Users (email, passwordHash, passwordSalt)
 		VALUES (${user.email}, ${password}, ${salt})
 		`);
 }
 
-export { isEmailInUse, insertUser }
+const getUsers = async ({email, ids}) => {
+
+	const query = SQL`SELECT * FROM Users WHERE true `;
+
+	if(email) {
+		query.append(SQL`AND email = ${email} `);
+	}
+
+	if(ids) {
+		query.append(SQL`AND userId IN (${ids}) `);
+	}
+
+	console.info(query);
+
+	return await db.query(query);
+}
+
+export { isEmailInUse, insertUser, getUsers }
