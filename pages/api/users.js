@@ -1,6 +1,4 @@
-const db = require('../../lib/db');
-const escp = require('sql-template-strings')
-const sha256 = require('sha256');
+import { isEmailInUse, insertUser } from './scripts/user.js'
 
 const validateUser = async (user) => {
 
@@ -25,50 +23,23 @@ const validateUser = async (user) => {
 	}
 
 	if(!res.valid) return res;
-	
-	const userResult = await db.query(escp`
-		SELECT email
-		FROM Users
-		WHERE email = ${user.email}
-		`);
 
-	if(userResult?.error) {
-		console.error(userResult);
-		return { valid: false };
-	}
-
-	if(userResult.length != 0) {
+	if(await isEmailInUse(user.email)) {
 		res.valid = false;
 		res.messages.push('Email address is already used');
 	}
 
-	console.info('User validated');
 	return res;
 }
-
-const insertUser = async (user) => {
-
-	let salt = sha256(user.email);
-	let password = sha256(user.password + salt);
-
-	await db.query(escp`
-		INSERT INTO Users (email, passwordHash, passwordSalt)
-		VALUES (${user.email}, ${password}, ${salt})
-		`);
-
-	console.info('User inserted');
-}
-
 
 export default async (req, res) => {
 
 	switch(req.method) {
 		case 'POST':
-			const userBody = req.body;
-			const val = await validateUser(userBody);
+			const val = await validateUser(req.body);
 			if(val.valid) {
-				insertUser(userBody);
-				res.status(201).json();
+				await insertUser(req.body);
+				res.status(201).json({});
 			} else {
 				res.status(400).json({ errors: val.messages });
 			}
