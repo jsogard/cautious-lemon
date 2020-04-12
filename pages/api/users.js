@@ -7,28 +7,26 @@ const validateUser = async (user) => {
 		messages: []
 	};
 
-	console.dir(user);
-
 	if(!user.email?.match(/(\w+)@(\w+\.\w+)/)) {
 		res.valid = false;
-		res.messages.push('Email format not valid');
+		res.messages.push({'email': 'Email format not valid'});
 	}
 
 	if(user.email.length >= 75) {
 		res.valid = false;
-		res.messages.push('Email is too long');
+		res.messages.push({'email': 'Email is too long'});
 	}
 
 	if(!user.password?.match(/\S{5,}/)) {
 		res.valid = false;
-		res.messages.push('Password is too short');
+		res.messages.push({'password': 'Password is too short'});
 	}
 
 	if(!res.valid) return res;
 
 	if(await isEmailInUse(user.email)) {
 		res.valid = false;
-		res.messages.push('Email address is already used');
+		res.messages.push({'email': 'Email address is already in use'});
 	}
 
 	return res;

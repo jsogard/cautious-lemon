@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col, Form, Button } from 'react-bootstrap'
+import { insertUser } from '../services/user';
 
 export default function Login(props) {
 
@@ -18,24 +19,15 @@ export default function Login(props) {
 
 	    if(isSignup) {
 	    	if(validateSignup()) {
-    			let id = null;
-	    		await fetch('/api/users', 
-	    			{
-	    				method: 'POST',
-	    				headers: { 'Content-Type': 'application/json' },
-	    				body: JSON.stringify({email, password})
-	    			})
-	    			.then((res) => res.json())
-	    			.then((data) => {
-	    				console.dir(data);
-	    				id = data[0].id;
+
+	    		insertUser({email, password})
+	    			.then((user) => {
+	    				console.dir(user);
+	    				props.setUserId(user.UserId);
 	    			})
 	    			.catch((e) => {
 	    				console.error(e);
 	    			})
-    			if(id !== null) {
-    				props.setUserId(id);
-    			}
 	    	}
 	    }
 
