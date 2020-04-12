@@ -19,7 +19,7 @@ export default function Login(props) {
 	    if(isSignup) {
 	    	if(validateSignup()) {
     			let id = null;
-	    		await fetch('http://localhost:3000/api/users', 
+	    		await fetch('/api/users', 
 	    			{
 	    				method: 'POST',
 	    				headers: { 'Content-Type': 'application/json' },

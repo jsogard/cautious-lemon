@@ -1,4 +1,4 @@
-import { isEmailInUse, insertUser, getUsers } from './scripts/user.js'
+import { isEmailInUse, insertUser, getUsers } from '../../queries/user.js'
 
 const validateUser = async (user) => {
 

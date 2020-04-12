@@ -1,4 +1,4 @@
-const db = require('../../../lib/db');
+const db = require('../lib/db');
 const SQL = require('sql-template-strings');
 const sha256 = require('sha256');
 
