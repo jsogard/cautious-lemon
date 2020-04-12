@@ -7,6 +7,8 @@ const validateUser = async (user) => {
 		messages: []
 	};
 
+	console.dir(user);
+
 	if(!user.email?.match(/(\w+)@(\w+\.\w+)/)) {
 		res.valid = false;
 		res.messages.push('Email format not valid');
@@ -38,8 +40,7 @@ export default async (req, res) => {
 		case 'POST':
 			const val = await validateUser(req.body);
 			if(val.valid) {
-				await insertUser(req.body);
-				res.status(201).json({});
+				res.status(201).json(await insertUser(req.body));
 			} else {
 				res.status(400).json({ errors: val.messages });
 			}

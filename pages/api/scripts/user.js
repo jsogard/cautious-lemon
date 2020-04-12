@@ -25,6 +25,7 @@ const insertUser = async (user) => {
 		INSERT INTO Users (email, passwordHash, passwordSalt)
 		VALUES (${user.email}, ${password}, ${salt})
 		`);
+	return await db.query(SQL`SELECT LAST_INSERT_ID() AS id`);
 }
 
 const getUsers = async ({email, ids}) => {
