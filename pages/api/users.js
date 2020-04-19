@@ -1,32 +1,34 @@
 import { isEmailInUse, insertUser, getUsers } from '../../queries/user.js'
+import { addError } from '../../utils/error'
 
 const validateUser = async (user) => {
 
 	const res = {
 		valid: true,
-		messages: []
+		messages: [],
+		errors: {}
 	};
 
 	if(!user.email?.match(/(\w+)@(\w+\.\w+)/)) {
 		res.valid = false;
-		res.messages.push({'email': 'Email format not valid'});
+		addError(res.errors, 'loginEmail', 'Email format invalid');
 	}
 
 	if(user.email.length >= 75) {
 		res.valid = false;
-		res.messages.push({'email': 'Email is too long'});
+		addError(res.errors, 'loginEmail', 'Email must be shorter than 75 characters');
 	}
 
 	if(!user.password?.match(/\S{5,}/)) {
 		res.valid = false;
-		res.messages.push({'password': 'Password is too short'});
+		addError(res.errors, 'loginPassword', 'Password must be longer than 5 characters');
 	}
 
 	if(!res.valid) return res;
 
 	if(await isEmailInUse(user.email)) {
 		res.valid = false;
-		res.messages.push({'email': 'Email address is already in use'});
+		addError(res.errors, 'loginEmail', 'Email already in use');
 	}
 
 	return res;
@@ -40,7 +42,7 @@ export default async (req, res) => {
 			if(val.valid) {
 				res.status(201).json(await insertUser(req.body));
 			} else {
-				res.status(400).json({ errors: val.messages });
+				res.status(400).json({ errors: val.errors });
 			}
 			break;
 		case 'GET':
