@@ -3,6 +3,7 @@
 const insertUser = async ({email, password}) => {
 	let user = null;
 	let errors = null;
+	console.dir({email,password});
 
 	await fetch('/api/users', 
 		{
@@ -17,9 +18,10 @@ const insertUser = async ({email, password}) => {
 			if(data.errors) {
 				throw data.errors;
 			}
-			user = data.data;
+			user = data;
 		})
 		.catch((e) => {
+			console.error(e);
 			errors = e;
 		})
 	if(user !== null) {

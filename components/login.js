@@ -1,8 +1,34 @@
 import React, { useState } from 'react'
-import { Row, Col, Form, Button } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { insertUser, loginUser } from '../services/user';
-import ErrorTip from './errortip'
-import { formValidate } from '../utils/error';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+const SignupSchema = Yup.object().shape({
+	email: Yup.string()
+		.email('Invalid email')
+		.required('Required'),
+	password: Yup.string()
+		.min(5, 'Too short')
+		.required('Required'),
+	confirm: Yup.string()
+		.test(
+			'matches-password',
+			'Doesn\'t match password',
+			function (value) {
+				return this.parent.password == value;
+			}
+		)
+});
+
+const LoginSchema = Yup.object().shape({
+	email: Yup.string()
+		.email('Invalid email')
+		.required('Required'),
+	password: Yup.string()
+		.min(5, 'Too short')
+		.required('Required')
+});
 
 export default function Login({setUserId}) {
 
@@ -11,94 +37,59 @@ export default function Login({setUserId}) {
 
 	const toggleSignup = () => setIsSignup(!isSignup);
 
-	const handleSubmit = async (event) => {
-		const form = event.currentTarget;
-
+	const handleSubmit = async (values, { setSubmitting }) => {
 	    event.preventDefault();
 		event.stopPropagation();
 
-		if(validate() && form.checkValidity()) {
-			const action = isSignup ? insertUser : loginUser;
+		const action = isSignup ? insertUser : loginUser;
 
-			action({email: loginEmail.value, password: loginPassword.value})
-				.then((user) => {
-					setUserId(user.UserId);
-				})
-				.catch((e) => {
-					setErrors(e);
-				})
-				
-		} else {
-			console.log('validation failed')
-			console.dir(errors)
-		}
+		await action({email: values.email, password: values.password})
+			.then((user) => {
+				setUserId(user.UserId);
+			})
+			.catch((e) => {
+				console.error(e);
+				setErrors(e);
+			})
+
+		setSubmitting(false);			
 	};
-
-	const validate = () => {
-		setErrors({});
-		[loginEmail, loginPassword].forEach((formItem) => formValidate(setErrors, formItem))
-		formValidate(setErrors, loginPassword, 'Password must be longer than 5 characters', 
-			() => loginPassword.value.length >= 5)
-
-		if(isSignup) {
-			formValidate(setErrors, loginConfirm)
-			formValidate(setErrors, loginConfirm, 'Password does not match', 
-				() => loginConfirm.value == loginPassword.value)
-		}
-
-		return Object.keys(errors).length == 0;
-	}
-
 
 	return (
 		<Row>
 			<Col />
-			<Col xs={4}>
-				<Form noValidate onSubmit={handleSubmit} >
-					<Form.Group controlId="loginEmail">
-						<Form.Label>
-							Email
-							{ errors.loginEmail && <ErrorTip subject='loginEmail' messages={errors.loginEmail} /> }
-						</Form.Label>
-						<Form.Control required type="email" placeholder="Email" />
-					</Form.Group>
+			<Col sm={4}>
+				<Formik 
+					initialValues={ { email: '', password: '' } }
+					validationSchema={ isSignup ? SignupSchema : LoginSchema }
+					onSubmit={ handleSubmit }
+					>
+						{({ errors, touched, isSubmitting }) => 
+						(
+							<Form noValidate>
+								<Field type='email' name='email' placeholder='Email' />
+								<ErrorMessage name='email' component='span'/>
 
-					<Form.Group controlId="loginPassword">
-						<Form.Label>
-							Password
-							{ errors.loginPassword && <ErrorTip subject='loginPassword' messages={errors.loginPassword} /> }
-						</Form.Label>
-						<Form.Control required type="password" placeholder="Password" />
-					</Form.Group>
+								<Field type='password' name='password' placeholder='Password' />
+								<ErrorMessage name='password' component='span'/>
+								
+								{isSignup && (
+									<>
+										<Field type='password' name='confirm' placeholder='Confirm password'/>
+										<ErrorMessage name='confirm' component='span'/>
+									</>
+								)}
 
-					{isSignup &&
-						<Form.Group controlId="loginConfirm">
-							<Form.Label>
-								Confirm Password
-								{ errors.loginConfirm && <ErrorTip subject='loginConfirm' messages={errors.loginConfirm} /> }
-							</Form.Label>
-							<Form.Control required type="password" placeholder="Confirm Password" />
-						</Form.Group>
-					}
+								<button type="submit" disabled={ isSubmitting } >
+									Submit
+								</button>
 
-					<Form.Text className="text-muted" onClick={() => toggleSignup()}>
-						{ isSignup ? 'Log in' : 'Sign up' }
-					</Form.Text>
-
-					<Button variant="primary" type="submit" >
-						Submit
-					</Button>
-				</Form>
+								<span onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+							</Form>
+						)}
+					</Formik>
 			</Col>
 			<Col />
-			<style jsx>
-			{`
-				label svg {
-					width: 1rem;
-					margin-left: 1rem;
-				}
-			`}
-			</style>
 		</Row>
 		
 		);

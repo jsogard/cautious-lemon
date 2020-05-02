@@ -24,6 +24,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
     "bootstrap": "^4.4.1",
+    "formik": "^2.1.4",
     "next": "^9.3.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
@@ -32,6 +33,7 @@
     "sha256": "^0.2.0",
     "sql-template-strings": "^2.2.2",
     "styled-jsx": "^3.2.5",
-    "swr": "^0.2.0"
+    "swr": "^0.2.0",
+    "yup": "^0.28.5"
   }
 }
