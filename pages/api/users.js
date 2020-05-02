@@ -1,7 +1,7 @@
 import { isEmailInUse, insertUser, getUsers } from '../../queries/user.js'
 import { addError } from '../../utils/error'
 
-const validateUser = async (user) => {
+const validateUser = async ({email, password}) => {
 
 	const res = {
 		valid: true,
@@ -9,24 +9,25 @@ const validateUser = async (user) => {
 		errors: {}
 	};
 
-	if(!user.email?.match(/(\w+)@(\w+\.\w+)/)) {
+	if(!email?.match(/(\w+)@(\w+\.\w+)/)) {
 		res.valid = false;
 		addError(res.errors, 'loginEmail', 'Email format invalid');
 	}
 
-	if(user.email.length >= 75) {
+	if(email.length >= 75) {
 		res.valid = false;
 		addError(res.errors, 'loginEmail', 'Email must be shorter than 75 characters');
 	}
 
-	if(!user.password?.match(/\S{5,}/)) {
+	if(!password?.match(/\S{5,}/)) {
 		res.valid = false;
 		addError(res.errors, 'loginPassword', 'Password must be longer than 5 characters');
 	}
 
 	if(!res.valid) return res;
 
-	if(await isEmailInUse(user.email)) {
+	
+	if(await isEmailInUse(email)) {
 		res.valid = false;
 		addError(res.errors, 'loginEmail', 'Email already in use');
 	}
@@ -35,6 +36,7 @@ const validateUser = async (user) => {
 }
 
 export default async (req, res) => {
+
 
 	switch(req.method) {
 		case 'POST':

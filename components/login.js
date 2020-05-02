@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { Row, Col, Form, Button } from 'react-bootstrap'
-import { insertUser } from '../services/user';
+import { insertUser, loginUser } from '../services/user';
 import ErrorTip from './errortip'
 import { formValidate } from '../utils/error';
 
-export default function Login({}) {
+export default function Login({setUserId}) {
 
-	const [isSignup, setIsSignup] = useState(true);
+	const [isSignup, setIsSignup] = useState(false);
 	const [errors, setErrors] = useState({});
+
+	const toggleSignup = () => setIsSignup(!isSignup);
 
 	const handleSubmit = async (event) => {
 		const form = event.currentTarget;
@@ -16,17 +18,16 @@ export default function Login({}) {
 		event.stopPropagation();
 
 		if(validate() && form.checkValidity()) {
-			if(isSignup) {
-				insertUser({email: loginEmail.value, password: loginPassword.value})
-	    			.then((user) => {
-	    				console.dir(user);
-	    				props.setUserId(user.UserId);
-	    			})
-	    			.catch((e) => {
-						console.dir(e)
-						setErrors(e);
-	    			})
-			}
+			const action = isSignup ? insertUser : loginUser;
+
+			action({email: loginEmail.value, password: loginPassword.value})
+				.then((user) => {
+					setUserId(user.UserId);
+				})
+				.catch((e) => {
+					setErrors(e);
+				})
+				
 		} else {
 			console.log('validation failed')
 			console.dir(errors)
@@ -79,6 +80,10 @@ export default function Login({}) {
 							<Form.Control required type="password" placeholder="Confirm Password" />
 						</Form.Group>
 					}
+
+					<Form.Text className="text-muted" onClick={() => toggleSignup()}>
+						{ isSignup ? 'Log in' : 'Sign up' }
+					</Form.Text>
 
 					<Button variant="primary" type="submit" >
 						Submit

@@ -8,7 +8,6 @@ const isEmailInUse = async (email) => {
 		FROM Users
 		WHERE email = ${email}
 		`);
-
 	if(res?.error) {
 		throw res.error;
 	}

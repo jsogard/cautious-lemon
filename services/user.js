@@ -3,19 +3,21 @@
 const insertUser = async ({email, password}) => {
 	let user = null;
 	let errors = null;
+
 	await fetch('/api/users', 
 		{
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
+			headers: { ['Content-Type']: 'application/json' },
 			body: JSON.stringify({ email, password })
 		})
-		.then((res) => res.json())
+		.then((res) => {
+			return res.json();
+		})
 		.then((data) => {
-			console.dir(data);
 			if(data.errors) {
 				throw data.errors;
 			}
-			user = data[0];
+			user = data.data;
 		})
 		.catch((e) => {
 			errors = e;
@@ -26,7 +28,37 @@ const insertUser = async ({email, password}) => {
 	else {
 		throw errors;
 	}
-}
+};
+
+const loginUser = async ({email, password}) => {
+
+	let user = null;
+	let errors = null;
+
+	await fetch('/api/login',
+		{
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email, password })
+		})
+		.then((res) => res.json())
+		.then((data) => {
+			if(data.errors) {
+				throw data.errors;
+			}
+			user = data;
+		})
+		.catch((e) => {
+			errors = e;
+		})
+	
+	if(user !== null) {
+		return user;
+	}
+	else {
+		throw errors;
+	}
+};
 
 
-export { insertUser }
+export { insertUser, loginUser }
