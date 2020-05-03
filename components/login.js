@@ -5,6 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import InputField from './field';
 import * as Yup from 'yup';
 import '../pages/_login.less'
+import '../pages/_styles.less'
 
 const SignupSchema = Yup.object().shape({
 	email: Yup.string()
@@ -35,7 +36,6 @@ const LoginSchema = Yup.object().shape({
 export default function Login({setUserId}) {
 
 	const [isSignup, setIsSignup] = useState(false);
-	const [errors, setErrors] = useState({});
 
 	const toggleSignup = () => setIsSignup(!isSignup);
 
@@ -82,7 +82,7 @@ export default function Login({setUserId}) {
 
 								<div id='controls'>
 									<button type="submit" disabled={ isSubmitting } >
-										{ isSubmitting ? '...' : 'Submit' }
+										{ isSubmitting ? <img src='/spinner.svg' /> : 'Submit'}
 									</button>
 									<span class='click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
 								</div>
