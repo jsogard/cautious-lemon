@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { insertUser, loginUser } from '../services/user';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
+import InputField from './field';
 import * as Yup from 'yup';
+import '../pages/_login.less'
 
 const SignupSchema = Yup.object().shape({
 	email: Yup.string()
@@ -67,24 +69,18 @@ export default function Login({setUserId}) {
 						{({ errors, touched, isSubmitting }) => 
 						(
 							<Form noValidate>
-								<Field type='email' name='email' placeholder='Email' />
-								<ErrorMessage name='email' component='span'/>
-
-								<Field type='password' name='password' placeholder='Password' />
-								<ErrorMessage name='password' component='span'/>
+								<Field type='email' name='email' placeholder='user@email.com' label='Email' component={InputField} required />
+								<Field type='password' name='password' placeholder='*****' label='Password' component={InputField} required />
 								
 								{isSignup && (
-									<>
-										<Field type='password' name='confirm' placeholder='Confirm password'/>
-										<ErrorMessage name='confirm' component='span'/>
-									</>
+									<Field type='password' name='confirm' placeholder='*****' label='Confirm password' component={InputField} required />
 								)}
 
 								<button type="submit" disabled={ isSubmitting } >
 									Submit
 								</button>
 
-								<span onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+								<span class='click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
 							</Form>
 						)}
 					</Formik>
