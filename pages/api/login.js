@@ -16,7 +16,7 @@ const checkLogin = async ({ email, password }) => {
 
     if(users == null || users.length == 0) {
         res.valid = false;
-        addError(res.errors, 'loginEmail', 'Email not recognized');
+        addError(res.errors, 'email', 'Email not found');
         return res;
     }
 
@@ -24,7 +24,7 @@ const checkLogin = async ({ email, password }) => {
 
     if(sha256(password + user.PasswordSalt)  != user.PasswordHash) {
         res.valid = false
-        addError(res.errors, 'loginPassword', 'Password is wrong');
+        addError(res.errors, 'password', 'Incorrect password');
         return res;
     }
 

@@ -1,6 +1,6 @@
 import { ErrorMessage } from 'formik'
 
-export default function InputField({ type, label, placeholder, field, form: {errors, touched}, required }) {
+export default function InputField({ type, label, placeholder, field, form: {errors, touched, status}, required }) {
 
     const getInputClassName = () => {
         if(touched[field.name]) {
@@ -13,6 +13,11 @@ export default function InputField({ type, label, placeholder, field, form: {err
         return '';
     }
 
+    const getErrorMessage = () => {
+        const message = (status && status[field.name]) || errors[field.name];
+        return message ? (<span class='error'> {message} </span>) : null;
+    }
+
     return (
         <div>
             <span class={`label ${required ? 'required' : ''}`}>{ label || placeholder || field.name }</span>
@@ -20,7 +25,7 @@ export default function InputField({ type, label, placeholder, field, form: {err
                 type={type} 
                 {...field}
                 placeholder={placeholder} />
-            <ErrorMessage className='error' name={field.name} component='span'/>
+            { getErrorMessage() }
         </div>
     )
 }

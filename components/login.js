@@ -39,7 +39,7 @@ export default function Login({setUserId}) {
 
 	const toggleSignup = () => setIsSignup(!isSignup);
 
-	const handleSubmit = async (values, { setSubmitting }) => {
+	const handleSubmit = async (values, { setStatus, setSubmitting }) => {
 	    event.preventDefault();
 		event.stopPropagation();
 
@@ -50,9 +50,8 @@ export default function Login({setUserId}) {
 				setUserId(user.UserId);
 			})
 			.catch((e) => {
-				console.error(e);
-				setErrors(e);
-			})
+				setStatus(e);
+			});
 
 		setSubmitting(false);			
 	};
@@ -65,7 +64,7 @@ export default function Login({setUserId}) {
 					validationSchema={ isSignup ? SignupSchema : LoginSchema }
 					onSubmit={ handleSubmit }
 					>
-						{({ errors, touched, isSubmitting }) => 
+						{({ errors, status, touched, isSubmitting }) => 
 						(
 							<Form noValidate>
 

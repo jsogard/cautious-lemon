@@ -11,17 +11,17 @@ const validateUser = async ({email, password}) => {
 
 	if(!email?.match(/(\w+)@(\w+\.\w+)/)) {
 		res.valid = false;
-		addError(res.errors, 'loginEmail', 'Email format invalid');
+		addError(res.errors, 'email', 'Invalid email');
 	}
 
 	if(email.length >= 75) {
 		res.valid = false;
-		addError(res.errors, 'loginEmail', 'Email must be shorter than 75 characters');
+		addError(res.errors, 'email', 'Too long');
 	}
 
 	if(!password?.match(/\S{5,}/)) {
 		res.valid = false;
-		addError(res.errors, 'loginPassword', 'Password must be longer than 5 characters');
+		addError(res.errors, 'password', 'Too short');
 	}
 
 	if(!res.valid) return res;
@@ -29,7 +29,7 @@ const validateUser = async ({email, password}) => {
 	
 	if(await isEmailInUse(email)) {
 		res.valid = false;
-		addError(res.errors, 'loginEmail', 'Email already in use');
+		addError(res.errors, 'email', 'Email already in use');
 	}
 
 	return res;
