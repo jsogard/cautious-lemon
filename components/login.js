@@ -59,8 +59,7 @@ export default function Login({setUserId}) {
 
 	return (
 		<Row>
-			<Col />
-			<Col sm={4}>
+			<Col>
 				<Formik 
 					initialValues={ { email: '', password: '' } }
 					validationSchema={ isSignup ? SignupSchema : LoginSchema }
@@ -69,23 +68,29 @@ export default function Login({setUserId}) {
 						{({ errors, touched, isSubmitting }) => 
 						(
 							<Form noValidate>
-								<Field type='email' name='email' placeholder='user@email.com' label='Email' component={InputField} required />
-								<Field type='password' name='password' placeholder='*****' label='Password' component={InputField} required />
+
+								<div id='title-card'>
+									<img src='/img/lemon.png' />
+									<h3>Cautious Lemon</h3>
+								</div>
+
+								<Field type='email' name='email' placeholder='user@email.com' label='Email' component={InputField} />
+								<Field type='password' name='password' placeholder='* * * * *' label='Password' component={InputField} />
 								
 								{isSignup && (
-									<Field type='password' name='confirm' placeholder='*****' label='Confirm password' component={InputField} required />
+									<Field type='password' name='confirm' placeholder='* * * * *' label='Confirm Password' component={InputField} />
 								)}
 
-								<button type="submit" disabled={ isSubmitting } >
-									Submit
-								</button>
-
-								<span class='click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+								<div id='controls'>
+									<button type="submit" disabled={ isSubmitting } >
+										{ isSubmitting ? '...' : 'Submit' }
+									</button>
+									<span class='click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+								</div>
 							</Form>
 						)}
 					</Formik>
 			</Col>
-			<Col />
 		</Row>
 		
 		);

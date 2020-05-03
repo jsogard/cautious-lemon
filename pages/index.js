@@ -19,6 +19,7 @@ export default function Index() {
 		<div>
 			<Head>
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+				<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
 			</Head>
 		<Container>
 			{getContent()}

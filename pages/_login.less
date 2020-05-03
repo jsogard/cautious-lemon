@@ -1,22 +1,98 @@
+@import "./_styles.less";
 
+form {
+    max-width: 20vw;
+    border: 1px solid @primary-color;
+    color: @black;
+    font-family: @sansserif-font;
+    letter-spacing: .07rem;
+    margin: auto;
+    margin-top: 10vh;
 
-form span {
+    div {
 
-    &.error {
-        color: red;
-        font-style: italic;
-        font-size: small;
+        display: flex;
+        flex-direction: column;
+        padding: 3% 10%;
+
+        &#title-card {
+
+            padding-top: 5%;
+            flex-direction: row;
+            font-family: @serif-font;
+
+            img {
+                max-width: 40%;
+            }
+        }
+
+        span.label {
+
+            font-family: @serif-font;
+
+            &.required::after {
+                content: '*';
+                color: red;
+            }
+
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid lightgray;
+            font-style: italic;
+            color: hsl(0, 0%, 30%);
+
+            &:focus {
+                outline: none;
+                border-bottom: 1px solid;
+            }
+
+            &.valid {
+                border-color: @dark-green;
+            }
+    
+            &.error {
+                border-color: red;
+            }
+
+            &::placeholder {
+                letter-spacing: .07rem;
+            }
+        }
+
+        &#controls {
+            flex-direction: row;
+
+            button[type='submit'] {
+                background-color: white;
+                border: 1px solid @secondary-color;
+                border-radius: 8%;
+                color: @secondary-color;
+                cursor: pointer;
+            }
+        }
     }
 
-    &.click {
-        color:rgb(26, 13, 171);
+    
+
+    span {
+        &.error {
+            color: red;
+            font-style: italic;
+            font-size: small;
+        }
+    
+        &.click {
+            color: @secondary-color;
+            cursor: pointer;
+            font-style: italic;
+            margin-left: auto;
+            font-size: small;
+        }
     }
 }
 
-form input {
 
-    &.error {
-        border-color: red;
-    }
-}
+
 

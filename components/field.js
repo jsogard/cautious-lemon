@@ -2,15 +2,25 @@ import { ErrorMessage } from 'formik'
 
 export default function InputField({ type, label, placeholder, field, form: {errors, touched}, required }) {
 
+    const getInputClassName = () => {
+        if(touched[field.name]) {
+            if(errors[field.name]) {
+                return 'error';
+            } else {
+                return 'valid';
+            }
+        }
+        return '';
+    }
+
     return (
-        <>
-            <span class='label'>{ label || placeholder || field.name }</span>
-            { required && <span class='error'>*</span>}
-            <input className={ errors[field.name] && touched[field.name] ? 'error' : null } 
+        <div>
+            <span class={`label ${required ? 'required' : ''}`}>{ label || placeholder || field.name }</span>
+            <input className={ getInputClassName() } 
                 type={type} 
                 {...field}
                 placeholder={placeholder} />
             <ErrorMessage className='error' name={field.name} component='span'/>
-        </>
+        </div>
     )
 }
