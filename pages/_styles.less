@@ -12,3 +12,81 @@
 
 @serif-font: 'Playfair Display', serif;
 @sansserif-font: 'Roboto', sans-serif;
+
+@sidebar-width: 18vw;
+@title-text-width: 72vw;
+
+
+span {
+
+    &.secondary-click {
+        color: @secondary-color;
+        cursor: pointer;
+        font-style: italic;
+        margin-left: auto;
+        font-size: small;
+        font-family: @sansserif-font;
+        letter-spacing: .07rem;
+    }
+}
+
+div#title-card {
+
+    display: flex;
+    flex-direction: row;
+    font-family: @serif-font;
+
+    width: 270px;
+    height: 100px;
+    padding: 15px 25px;
+
+    img {
+        width: 40%;
+        height: auto;
+    }
+}
+
+div#sidebar {
+    height: 100vh;
+    width: @sidebar-width;
+    border-right: 1px solid @primary-color;
+
+    ~ div {
+        width: 88vw;
+    }
+}
+
+div#app {
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+div#header {
+    width: 100%;
+    border-bottom: 1px solid @primary-color;
+    height: 15vh;
+
+    > * {
+        height: 100%;
+    }
+
+    #title-text {
+        width: @title-text-width;
+        font-family: 'Lobster', cursive;
+        font-size: -webkit-xxx-large;
+        padding: 5%;
+        color: @primary-color;
+    }
+
+    #log-out {
+        float: right;
+        height: 100%;
+        width: calc(100vw - @sidebar-width - @title-text-width);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

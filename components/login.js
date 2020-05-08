@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap'
 import { insertUser, loginUser } from '../services/user';
 import { Formik, Form, Field } from 'formik';
 import InputField from './field';
+import TitleCard from './titleCard'
 import * as Yup from 'yup';
 import '../pages/_login.less'
 import '../pages/_styles.less'
@@ -47,6 +48,7 @@ export default function Login({setUserId}) {
 
 		await action({email: values.email, password: values.password})
 			.then((user) => {
+				localStorage.setItem('userId', user.UserId);
 				setUserId(user.UserId);
 			})
 			.catch((e) => {
@@ -68,10 +70,7 @@ export default function Login({setUserId}) {
 						(
 							<Form noValidate>
 
-								<div id='title-card'>
-									<img src='/img/lemon.png' />
-									<h3>Cautious Lemon</h3>
-								</div>
+								<TitleCard />
 
 								<Field type='email' name='email' placeholder='user@email.com' label='Email' component={InputField} />
 								<Field type='password' name='password' placeholder='* * * * *' label='Password' component={InputField} />
@@ -84,7 +83,7 @@ export default function Login({setUserId}) {
 									<button type="submit" disabled={ isSubmitting } >
 										{ isSubmitting ? <img src='/spinner.svg' /> : 'Submit'}
 									</button>
-									<span class='click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+									<span class='secondary-click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
 								</div>
 							</Form>
 						)}
