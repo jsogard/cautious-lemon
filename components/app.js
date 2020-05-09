@@ -2,6 +2,14 @@ import Login from '../components/login'
 import Head from 'next/head'
 import React, { useState, useEffect } from 'react'
 import TitleCard from './titleCard';
+import { config, library } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { faUserCircle, faHammer, faBookOpen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+library.add(fab, faUserCircle, faHammer, faBookOpen)
 
 export default function App({ children }) {
 
@@ -24,12 +32,24 @@ export default function App({ children }) {
 		return (
             <div id='app'>
                 <div id='sidebar'>
-                    <TitleCard />    
+                    <TitleCard />
+                    <div>
+                        <FontAwesomeIcon icon='user-circle' size="md" />
+                        <span>Profile</span>
+                    </div>
+                    <div>
+                        <FontAwesomeIcon icon='hammer' size="md" />
+                        <span>My Projects</span>
+                    </div>
+                    <div>
+                        <FontAwesomeIcon icon='book-open' size="md" />
+                        <span>Browse Projects</span>
+                    </div>
                 </div> 
                 <div>
                     <div id='header'>
                         <span id='title-text' >Some kinda title text...</span>
-                        <span id='log-out' class='secondary-click' onClick={ () => logOut() } > Log Out </span>
+                        <span id='log-out' className='secondary-click' onClick={ () => logOut() } > Log Out </span>
                     </div>
                     
                     <div id='content'>{children}</div>

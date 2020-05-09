@@ -12,6 +12,7 @@
 
 @serif-font: 'Playfair Display', serif;
 @sansserif-font: 'Roboto', sans-serif;
+@cursive-font: 'Lobster', cursive;
 
 @sidebar-width: 18vw;
 @title-text-width: 72vw;
@@ -40,9 +41,31 @@ div#title-card {
     height: 100px;
     padding: 15px 25px;
 
+    margin-bottom: 15%;
+
     img {
         width: 40%;
         height: auto;
+    }
+
+    ~ div {
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        font-family: @cursive-font;
+        font-size: larger;
+        cursor: pointer;
+        letter-spacing: .05rem;
+
+        &:hover {
+            background: @primary-color;
+            color: white;
+        }
+
+        svg {
+            width: 2rem;
+            margin: .5rem;
+        }
     }
 }
 
@@ -53,6 +76,11 @@ div#sidebar {
 
     ~ div {
         width: 88vw;
+    }
+
+    div {
+        text-align: center;
+        width: 100%;
     }
 }
 
@@ -74,7 +102,7 @@ div#header {
 
     #title-text {
         width: @title-text-width;
-        font-family: 'Lobster', cursive;
+        font-family: @cursive-font;
         font-size: -webkit-xxx-large;
         padding: 5%;
         color: @primary-color;

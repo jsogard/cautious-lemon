@@ -83,7 +83,7 @@ export default function Login({setUserId}) {
 									<button type="submit" disabled={ isSubmitting } >
 										{ isSubmitting ? <img src='/spinner.svg' /> : 'Submit'}
 									</button>
-									<span class='secondary-click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
+									<span className='secondary-click' onClick={ () => toggleSignup() }>{ isSignup ? 'Log In' : 'Sign Up' }</span>
 								</div>
 							</Form>
 						)}
