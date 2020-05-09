@@ -33,15 +33,15 @@ export default function App({ children }) {
             <div id='app'>
                 <div id='sidebar'>
                     <TitleCard />
-                    <div>
+                    <div class='side-nav'>
                         <FontAwesomeIcon icon='user-circle' size="md" />
                         <span>Profile</span>
                     </div>
-                    <div>
+                    <div class='side-nav'>
                         <FontAwesomeIcon icon='hammer' size="md" />
                         <span>My Projects</span>
                     </div>
-                    <div>
+                    <div class='side-nav'>
                         <FontAwesomeIcon icon='book-open' size="md" />
                         <span>Browse Projects</span>
                     </div>

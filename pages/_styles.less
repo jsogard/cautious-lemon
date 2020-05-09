@@ -47,8 +47,23 @@ div#title-card {
         width: 40%;
         height: auto;
     }
+}
+
+div#sidebar {
+    height: 100vh;
+    width: @sidebar-width;
+    border-right: 1px solid @primary-color;
 
     ~ div {
+        width: 88vw;
+    }
+
+    div {
+        text-align: center;
+        width: 100%;
+    }
+
+    div.side-nav {
         height: 3rem;
         display: flex;
         align-items: center;
@@ -66,21 +81,6 @@ div#title-card {
             width: 2rem;
             margin: .5rem;
         }
-    }
-}
-
-div#sidebar {
-    height: 100vh;
-    width: @sidebar-width;
-    border-right: 1px solid @primary-color;
-
-    ~ div {
-        width: 88vw;
-    }
-
-    div {
-        text-align: center;
-        width: 100%;
     }
 }
 

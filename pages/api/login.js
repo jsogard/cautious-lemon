@@ -22,7 +22,7 @@ const checkLogin = async ({ email, password }) => {
 
     const user = users[0];
 
-    if(sha256(password + user.PasswordSalt)  != user.PasswordHash) {
+    if(sha256(password + user.passwordSalt)  != user.passwordHash) {
         res.valid = false
         addError(res.errors, 'password', 'Incorrect password');
         return res;
