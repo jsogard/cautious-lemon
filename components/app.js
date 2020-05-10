@@ -2,21 +2,45 @@ import Login from '../components/login'
 import Head from 'next/head'
 import React, { useState, useEffect } from 'react'
 import TitleCard from './titleCard';
+import Link from 'next/link'
 import { config, library } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faUserCircle, faHammer, faBookOpen } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle, faHammer, faBookOpen, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-library.add(fab, faUserCircle, faHammer, faBookOpen)
+library.add(fab, faUserCircle, faHammer, faBookOpen, faPlusCircle)
 
 export default function App({ children }) {
 
     const [userId, setUserId] = useState(null);
+    const [navs, setNavs] = useState([]);
     
     useEffect(() => {
         setUserId(localStorage.getItem('userId'));
+        setNavs([
+            {
+                linkText: 'My Profile',
+                href: '/profile',
+                icon: 'user-circle'
+            },
+            {
+                linkText: 'Start New Project',
+                href: '/',
+                icon: 'plus-circle'
+            },
+            {
+                linkText: 'My Projects',
+                href: '/',
+                icon: 'hammer'
+            },
+            {
+                linkText: 'Browse Projects',
+                href: '/',
+                icon: 'book-open'
+            }
+        ])
     }, []);
     
     const logOut = () => {
@@ -33,18 +57,14 @@ export default function App({ children }) {
             <div id='app'>
                 <div id='sidebar'>
                     <TitleCard />
-                    <div class='side-nav'>
-                        <FontAwesomeIcon icon='user-circle' size="md" />
-                        <span>Profile</span>
-                    </div>
-                    <div class='side-nav'>
-                        <FontAwesomeIcon icon='hammer' size="md" />
-                        <span>My Projects</span>
-                    </div>
-                    <div class='side-nav'>
-                        <FontAwesomeIcon icon='book-open' size="md" />
-                        <span>Browse Projects</span>
-                    </div>
+                    { navs.map(nav => 
+                        <Link href={ nav.href } key={ nav.linkText } >
+                            <div class='side-nav' >
+                                <FontAwesomeIcon icon={ nav.icon } size="md" />
+                                <span>{ nav.linkText }</span>
+                            </div>
+                        </Link> )}
+                    
                 </div> 
                 <div>
                     <div id='header'>
